@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Header</title>
+    <!-- import CSS -->
+    <link rel="stylesheet" href="../element-ui/lib/theme-chalk/index.css">
+    <!-- import Vue before Element -->
+    <script src="../js/vue.js"></script>
+    <script src="../element-ui/lib/index.js"></script>
+    <script src="../js/jquery-3.6.1.min.js"></script>
+    <script src="../js/axios.js"></script>
+    <style>
+        html, body {
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        #header-head {
+            /*margin: 0 auto;*/
+        }
+
+        .header {
+            width: 100%;
+            z-index: 9999;
+            height: 120px;
+            background-color: rgba(250, 240, 232, 0.5);
+
+        }
+
+        .head-title {
+            width: 100%;
+            height: 60px;
+        }
+
+        .head-tab {
+            width: 100%;
+            height: 60px;
+            transition: background-color 0.4s;
+        }
+
+        .head-tab:hover {
+            background-color: rgba(171, 166, 167, 0.263);
+        }
+
+        .title-el1 {
+            height: 60px;
+            line-height: 60px;
+            font-family: 楷体, 宋体;
+        }
+
+        .title-el2 {
+            height: 60px;
+            line-height: 60px;
+            position: absolute;
+            right: 23%;
+        }
+
+        .title-el1 span {
+            font-size: 28px;
+            font-weight: bolder;
+            letter-spacing: 3px;
+        }
+
+        .login-btn {
+            width: 50px !important;
+            height: 50px !important;
+            border-radius: 40px !important;
+            font-size: 14px;
+            transition: font-size 0.3s;
+            padding: 0;
+            border: 2px solid burlywood;
+        }
+
+        .login-btn:hover {
+            color: rgb(34, 185, 255);
+            cursor: pointer;
+            font-size: 16px
+        }
+
+        .drop_menu {
+            z-index: 999990 !important;
+            width: 230px;
+        }
+
+        .drop_menu .infoShow {
+            width: 100%;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .drop-item {
+            font-size: 14px;
+            margin: 4px auto;
+        }
+
+        .sec_tab {
+            text-align: center;
+            line-height: 57px;
+        }
+
+        .tab_use:hover {
+            border-bottom: 3px solid green;
+        }
+
+        .sec_tab_new {
+            border-bottom: 3px solid green;
+        }
+
+        .link-letter {
+            font-size: 22px !important;
+            font-family: 楷体, 宋体;
+            font-weight: bolder !important;
+            color: #000000 !important;
+            transition: 0.4s;
+            line-height: normal;
+        }
+
+        .link-letter:hover {
+            font-size: 24px !important;
+            color: #409eff !important;
+        }
+
+        .addUs {
+            font-size: 6px;
+            margin-top: 3px;
+            color: #6daf47;
+            user-select: none;
+        }
+
+        .addUs:hover {
+            cursor: pointer;
+        }
+
+        .loginImg {
+            height: 45px;
+            width: 45px;
+            border-radius: 50px!important;
+        }
+    </style>
+</head>
+<body>
+<div id="header-head">
+    <div class="header">
+        <el-row class="head-title">
+            <el-col :span="12" class="title-el">
+                <div class="title-el1"><span style="margin:0 30%; padding:0;">中医穴位之旅</span></div>
+            </el-col>
+            <el-col :span="12" class="title-el">
+                <div class="title-el2">
+                    <button @click="login" v-if="loginOpen" class="login-btn"><strong>{{ info }}</strong></button>
+                    <el-dropdown v-else>
+                    <span>
+                        <button class="login-btn"><img class="loginImg" style="object-fit: fill" :src="imgSrc"/></button>
+                    </span>
+                        <el-dropdown-menu slot="dropdown" class="drop_menu">
+                            <div class="infoShow">
+                                <div style="width: 90%;height: 95%;background-color: rgb(246, 247, 248)">
+                                    <div style="text-align: center;word-break:break-all;">
+                                        <div style="font-size: 20px;font-weight: bolder;min-height: 40px;line-height: 40px">
+                                            {{username}}
+                                        </div>
+                                        <el-tag style="user-select: none;" size="small">{{identity}}</el-tag>
+                                        <div class="addUs" v-if="toBeManager" @click="dialogVisible = true">成为管理员</div>
+                                    </div>
+                                    <el-row style="height: 70px;width: 100%;margin-bottom: 10px;">
+                                        <el-col :span="12" style="text-align: center">
+                                            <p style="font-size: 18px;font-weight: bolder;padding: 0;margin-bottom: 4px;">
+                                                {{question_num}}</p>
+                                            <span>已提问</span>
+                                        </el-col>
+                                        <el-col :span="12" style="text-align: center">
+                                            <p style="font-size: 18px;font-weight: bolder;padding: 0;margin-bottom: 4px;">
+                                                {{answer_num}}</p>
+                                            <span>已回答</span>
+                                        </el-col>
+                                    </el-row>
+                                </div>
+                            </div>
+                            <el-dropdown-item class="drop-item" icon="el-icon-s-custom" @click.native="controlInfo">
+                                个人中心
+                            </el-dropdown-item>
+                            <el-dropdown-item v-if="manage" class="drop-item" icon="el-icon-s-operation"
+                                              @click.native="superControl">
+                                后台管理
+                            </el-dropdown-item>
+                            <hr style="width: 90%">
+                            <el-dropdown-item class="drop-item" icon="el-icon-s-promotion" @click.native="quit">登出账号
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </div>
+            </el-col>
+        </el-row>
+        <el-row class="head-tab">
+            <el-col :span="3" class="sec_tab">
+                <el-link class="link-letter" href="" target="_self" :underline="false"></el-link>
+            </el-col>
+            <el-col :span="3" class="sec_tab">
+                <el-link class="link-letter" href="" target="_self" :underline="false"></el-link>
+            </el-col>
+            <el-col :span="3" class="sec_tab tab_use">
+                <el-link class="link-letter" href="../html/demo_index.html" :underline="false">首页</el-link>
+            </el-col>
+            <el-col :span="3" class="sec_tab tab_use">
+                <el-link class="link-letter" href="../html/basic_know.html" target="_self" :underline="false">了解中医
+                </el-link>
+            </el-col>
+            <el-col :span="3" class="sec_tab tab_use">
+                <el-link class="link-letter" href="../html/hand_acu.html" :underline="false">穴位理论</el-link>
+            </el-col>
+            <el-col :span="3" class="sec_tab tab_use">
+                <el-link class="link-letter" href="../html/recognition.html" :underline="false">手部穴位识别</el-link>
+            </el-col>
+            <el-col :span="3" class="sec_tab tab_use">
+                <el-link class="link-letter" href="../html/study.html" target="_self" :underline="false">讨论区</el-link>
+            </el-col>
+            <el-col :span="3" class="sec_tab">
+                <el-link class="link-letter" href="" target="_self" :underline="false"></el-link>
+            </el-col>
+        </el-row>
+    </div>
+    <el-dialog
+            title="提交您的信息"
+            :visible.sync="dialogVisible"
+            width="30%">
+        <el-input placeholder="请输入姓名" v-model="name">
+            <template slot="prepend">姓名</template>
+        </el-input>
+        <div style="margin: 30px 0;"></div>
+        <el-input
+                type="textarea"
+                :autosize="{ minRows: 3, maxRows: 5}"
+                placeholder="请简单说明要成为管理员的理由(字数200以内)"
+                v-model="textarea">
+        </el-input>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="submit">提 交</el-button>
+        </span>
+    </el-dialog>
+</div>
+</body>
+<script>
+    let HEADER_WIDTH = document.documentElement.clientWidth;
+    $('#header-head').css("width", HEADER_WIDTH);
+    new Vue({
+        el: "#header-head",
+        data() {
+            return {
+                question_num: 0,
+                answer_num: 0,
+
+                info: "登录",
+                loginOpen: true,
+                username: "",
+                identity: "",
+                manage: false,
+                imgSrc: "",
+                toBeManager: true,
+
+                dialogVisible: false,
+                name: "",
+                textarea: "",
+            }
+        },
+        methods: {
+            ready() {
+                axios({
+                    url: '/user/refresh/' + this.getCookie("acu_id"),
+                    method: "post",
+                }).then(resp => {
+                    if (resp.data.flag == true) {
+                        this.question_num = resp.data.ret[0]
+                        this.answer_num = resp.data.ret[1]
+                        this.username = resp.data.ret[2]
+                        this.identity = resp.data.ret[3]
+                        this.imgSrc = "http://nkich.top/" + resp.data.ret[4]
+                        let str_jsonData = JSON.stringify(resp.data);
+                        // 存储json字符串数据到本地
+                        localStorage.setItem('localData', str_jsonData);
+                    } else {
+                        this.$message({
+                            message: "数据获取错误，请刷新重试",
+                            type: "error",
+                        })
+                    }
+                })
+                    .catch(error => {
+                        console.log(error)
+                        this.$message({
+                            message: "数据获取错误，请刷新重试",
+                            type: "error",
+                        })
+                    })
+                    .finally(() => {
+                    })
+            },
+            //查看是否具有此权限
+            inPermission(per) {
+                let getLocalData = localStorage.getItem('localData');
+                // json字符串转化为json对象
+                let jsonObj = JSON.parse(getLocalData);
+                return jsonObj.ret[5].includes(per)
+            },
+            login() {
+                window.location.href = "../html/login.html"
+            },
+            controlInfo() {
+                setTimeout(() => {
+                    window.location.href = "../html/myUsercenter.html"
+                }, 300)
+            },
+            quit() {
+                this.delCookie("acu_telephone");
+                this.delCookie("acu_id");
+                this.info = "登录";
+                this.$message({
+                    type: "success",
+                    message: "退出成功"
+                })
+                setTimeout(function () {
+                    location.reload()
+                }, 500)
+            },
+            superControl() {
+                setTimeout(() => {
+                    window.location.href = "../html/super_control.html";
+                }, 400)
+            },
+            getCookie(cookieName) {
+                let strCookie = document.cookie;
+                let arrCookie = strCookie.split("; ");
+                for (let i = 0; i < arrCookie.length; i++) {
+                    let arr = arrCookie[i].split("=");
+                    if (cookieName == arr[0]) {
+                        return arr[1];
+                    }
+                }
+                return "";
+            },
+            //删除cookie
+            delCookie(name) {
+                let exp = new Date();
+                exp.setTime(exp.getTime() - 1);
+                let cv = this.getCookie(name);
+                if (cv != null) document.cookie = name + "=" + cv + "; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            },
+            submit() {
+                if (this.name == "") {
+                    this.$message({
+                        message: "请输入姓名",
+                        type: "warning",
+                    })
+                } else if (this.textarea == "") {
+                    this.$message({
+                        message: "请填写申请理由",
+                        type: "warning",
+                    })
+                } else {
+                    axios({
+                        url: '/account/upgrade',
+                        method: "post",
+                        data: {
+                            id: this.getCookie("acu_id"),
+                            name: this.name,
+                            content: this.textarea,
+                        }
+                    })
+                        .then(resp => {
+                            if (resp.data.flag == true) {
+                                this.$message({
+                                    message: resp.data.message,
+                                    type: 'success',
+                                })
+                                this.dialogVisible = false;
+                                this.name = "";
+                                this.textarea = "";
+                            } else {
+                                this.$message({
+                                    message: resp.data.message,
+                                    type: 'error',
+                                })
+                            }
+                        })
+                        .catch(resp => {
+                        })
+                        .finally(() => {
+                        })
+                }
+            }
+        },
+        mounted() {
+            let TEL = this.getCookie("acu_telephone");
+            if (TEL == null || TEL == "") {
+                this.info = "登录";
+                this.loginOpen = true;
+            } else {
+                this.info = TEL.substring(7,);
+                this.loginOpen = false;
+                this.ready();
+                setTimeout(() => {
+                    if (this.inPermission("BM")) {
+                        this.manage = true;
+                        this.toBeManager = false
+                    }
+                }, 300)
+
+            }
+
+        }
+    })
+</script>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+
+    <link rel="stylesheet" href="../element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="../css/recognition.css">
+
+    <!-- import Vue before Element -->
+    <script src="../js/vue.js"></script>
+    <script src="../element-ui/lib/index.js"></script>
+    <script src="../js/jquery-3.6.1.min.js"></script>
+
+
+</head>
+<body>
+<div id="app">
+    <div class="header">
+    </div>
+    <div class="container">
+        <div class="search">
+            <el-image class="recog-background" src="../src/images/recog_back.jpg"></el-image>
+            <div class="search-module">
+                <el-row>
+                    <el-col :span="2">
+                        <div class="search-left"></div>
+                    </el-col>
+                    <el-col :span="20">
+                        <div class="search-middle">
+                            <div><h2 class="search-title">手部穴位在线识别</h2></div>
+                            <div class="upload">
+                                <el-upload
+                                        action="/recognize/upload"
+                                        list-type="picture-card"
+                                        :show-file-list="false"
+                                        name="imgFile"
+                                        :before-upload="beforeImgUpload"
+                                        :on-success="handleAvatarSuccess">
+                                    <!--
+                                        action,list-card: element组件,实现点击加号上传图片,上传成功后显示图片,并可以删除等操作     （必选）
+                                        before_upload:    自定义函数,判断上传图片是否符合jpg,2M等格式要求，不符合不予以显示，提示错误信息  已实现（必选）
+                                        on-remove:        自定义函数,删除图片后后台也对应删除    未实现（可选）
+                                        on-success:       自定义函数,文件上传成功时的钩子函数    （可选）
+                                     -->
+                                    <img v-if="imgUrl" :src="imgUrl" style="display: block;width:100%;height:100%"/>
+                                    <i v-else class="el-icon-plus"></i>
+                                    <div class="el-upload__tip" slot="tip">点击+上传,只能上传jpg/png文件，且不超过2MB</div>
+                                </el-upload>
+                            </div>
+                            <div class="search-button">
+                                <el-button type="primary" class="recog-button" @click.native="search_begin">
+                                    {{loadingbuttext}}
+                                </el-button>
+                            </div>
+                        </div>
+                    </el-col>
+                    <el-col :span="2">
+                        <div class="search-right"></div>
+                    </el-col>
+                </el-row>
+
+            </div>
+
+
+        </div>
+        <div class="suggest">
+            <el-row>
+                <el-col :span="2">
+                    <div class="suggest-left"></div>
+                </el-col>
+                <el-col :span="20">
+                    <div class="suggest-middle">
+                        <div class="suggest-title"><h3>免费推荐和共享</h3></div>
+                        <div class="suggest-pictures">
+                            <ul class="flow_ul">
+                                <li><img class="img" src="../src/images/recog_img1.jpg"></li>
+                                <li><img class="img" src="../src/images/recog_img2.jpg"></li>
+                                <li><img class="img" src="../src/images/recog_img3.jpg"></li>
+                                <li><img class="img" src="../src/images/recog_img4.jpg"></li>
+                                <li><img class="img" src="../src/images/recog_img5.jpg"></li>
+                                <li><img class="img" src="../src/images/recog_img6.jpg"></li>
+                                <li><img class="img" src="../src/images/recog_img7.jpg"></li>
+                                <li><img class="img" src="../src/images/recog_img8.jpg"></li>
+                                <li><img class="img" src="../src/images/recog_img1.jpg"></li>
+                                <li><img class="img" src="../src/images/recog_img2.jpg"></li>
+                                <li><img class="img" src="../src/images/recog_img3.jpg"></li>
+                                <li><img class="img" src="../src/images/recog_img4.jpg"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </el-col>
+                <el-col :span="2">
+                    <div class="suggest-right"></div>
+                </el-col>
+            </el-row>
+        </div>
+        <div class="result">
+            <el-row>
+                <el-col :span="4">
+                    <div class="result-title-left"></div>
+                </el-col>
+                <el-col :span="16">
+                    <div class="result-middle">
+                        <div><h2 class="result-title">穴位识别结果</h2></div>
+                    </div>
+                </el-col>
+                <el-col :span="4">
+                    <div class="result-title-right"></div>
+                </el-col>
+            </el-row>
+
+            <el-row>
+                <el-col :span="4">
+                    <div class="result-left"></div>
+                </el-col>
+                <el-col :span="16" class="result-image">
+                        <!-- <div > -->
+                            <div class="result-icon">
+                                <img v-if="recogFile" :src="recogFile" style="width: 300px;height: 400px"/>
+                                <i v-else style="font-size: x-large" class="el-icon-document" alt="暂无数据">暂无数据</i>
+                            </div>
+                        <!-- </div> -->
+                </el-col>
+                <el-col :span="4">
+                    <div class="result-right"></div>
+                </el-col>
+            </el-row>
+
+        </div>
+    </div>
+</div>
+
+
+</body>
+
+<script src="../js/recognition.js"></script>
+
+</html>

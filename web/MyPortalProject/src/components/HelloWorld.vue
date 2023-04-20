@@ -1,136 +1,113 @@
 <template>
-  <div id="main" style="width: 60%;height:500px;" ref="main">
+  <div id="test_app">
+      <!--echarts的容器-->
+	<div id="charts1" style="width: 100%;height: 520px;background:#fff"></div>
   </div>
 </template>
-
+ 
 <script>
-import * as echarts from "echarts";
+import * as echarts from 'echarts'
 export default {
-  name: 'HelloWorld',
-  mounted() {
-    this.test()
-  },
-  methods: {
-    test() {
-      // 官方示例 var myChart = echarts.init(document.getElementById('main'));  
-      const myChart = echarts.init(this.$refs.main); // 我们可以这样写
-      // 
-      const time = (function () { // 立即执行函数
-        let now = new Date();  // 获得当前的时间
-        let res = []; // 存放时间的数组
-        let len = 5; // 要存几个时间？
-        while (len--) {
-          res.unshift(now.toLocaleTimeString().replace(/^\D*/, '')); // 转换时间，大家可以打印出来看一下
-          now = new Date(+now - 2000) // 延迟几秒存储一次？
-        }
-        return res;
-      })();
-      const dataOne = [11,4,7,8,13]
-      const dataTwo = [9,7,7,13,15]
-      //配置项，可以去查一下官方文档
-      let options = {
-        title: {
-          text: '动态',
-          textStyle: {
-            color: 'black'
-          }
-        },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'cross',
-            label: {
-              backgroundColor: '#283b56'
-            }
-          }
-        },
-        legend: {},
-        xAxis: {
-          type: 'category',
-          data: time, // 把时间组成的数组接过来，放在x轴上
-          boundaryGap: true
-        },
-        yAxis: {
-          type: 'value'
-        },
-        series: [
-          {
-            data: dataOne,
-            type: 'line',
-            name: '测试一',
-            markPoint: {
-              data: [
-                { type: 'max', name: '最大值' },
-                { type: 'min', name: '最小值' }
-              ]
-            },
-            markLine: {
-              data: [{ type: 'average', name: '平均值' }]
-            }
+		name: '',
+		data() {
+			return {
+				charts: '',
+				opinionData: ["155", "400", "900", "800", "300", "900", "270"]//数据
+			}
+		},
+    //调用
+		mounted() {
+			this.$nextTick(function() {
+				this.drawLine('main')
+			})
+		},
+		methods: {
+			drawLine(id) {
+				this.charts = echarts.init(document.getElementById(id))
+				this.charts.setOption({
+          title:{
+              left:'3%',
+              top:'5%',
+              text:"最近一周订单数量",//标题文本，支持使用 \n 换行。
           },
-          {
-            data: dataTwo,
-            name: '测试二',
-            type: 'line',
-            markPoint: {
-              data: [
-                { type: 'max', name: '最大值' },
-                { type: 'min', name: '最小值' }
-              ]
-            },
-            markLine: {
-              data: [{ type: 'average', name: '平均值' }]
-            }
-          }
-        ]
-      }
-      myChart.setOption(options)
-    }
-  }
-}
+					tooltip: {
+						trigger: 'axis'
+					},
+					legend: {
+                        align:'right',//文字在前图标在后
+                        left:'3%',
+                        top:'15%',
+						data: ['近一周']
+					},
+					grid: {
+                        top:'30%',
+						left: '5%',
+						right: '5%',
+						bottom: '5%',
+						containLabel: true
+					},
+ 
+					toolbox: {
+						feature: {
+							saveAsImage: {} //保存为图片
+						}
+					},
+					xAxis: {
+						type: 'category',
+                        boundaryGap:true,
+                        axisTick:{
+                            alignWithLabel:true //保证刻度线和标签对齐
+                        },
+                        data: ["周一","周二","周三","周四","周五","周六","周日"] //x坐标的名称
+					
+					},
+					yAxis: {
+						type: 'value',
+						boundaryGap: true,
+                        splitNumber:4, //纵坐标数
+                        interval:250 //强制设置坐标轴分割间隔
+					},
+ 
+					series: [{
+						name: '近一周',
+						type: 'line', //折线图line;柱形图bar;饼图pie
+						stack: '总量',
+                        areaStyle: {
+                            //显示区域颜色---渐变效果
+                            color:{
+                                type: 'linear',
+                                x: 0,
+                                y: 0,
+                                x2: 0,
+                                y2: 1,
+                                colorStops: [{
+                                    offset: 0, color: 'rgb(255,200,213)' // 0% 处的颜色
+                                }, {
+                                    offset: 1, color: '#ffffff' // 100% 处的颜色
+                                }],
+                                global: false // 缺省为 false
+                            }
+                        },
+                        itemStyle: {
+							color: 'rgb(255,96,64)', //改变折线点的颜色
+							lineStyle: {
+								color: 'rgb(255,96,64)' //改变折线颜色
+							}
+                            
+                        },
+						data: this.opinionData
+					}]
+				})
+			}
+		}
+		
+	}
 </script>
-
-<style scoped lang="scss">
+ 
+<style scoped>
+	* {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
 </style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- 
-<script>
-export default {
-  name: 'HelloWorld',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    }
-  }
-}
-</script> -->
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<!-- <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style> -->

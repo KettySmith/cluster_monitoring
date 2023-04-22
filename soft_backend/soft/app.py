@@ -2,7 +2,7 @@ from flask import Flask
 
 app = Flask(__name__)
 app.config["timeout"] = 60  # 60 seconds
-
+CORS(app, supports_credentials=True, resources=r"/*")
 @app.route('/')
 def hello_world():
     return 'Hello World!'

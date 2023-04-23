@@ -4,7 +4,7 @@ import pymysql
 import csv
 
 # 创建连接
-db = pymysql.connect(host='192.168.23.140', user='root', password='soft_test',port=3307)
+db = pymysql.connect(host='127.0.0.1', user='root', password='Wjhyy1.',port=3306)
 # 创建游标
 cursor = db.cursor()
 

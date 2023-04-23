@@ -4,7 +4,7 @@ import os
 import pymysql
 
 # 创建连接
-db = pymysql.connect(host='192.168.23.140', user='root', password='soft_test', port=3307)
+db = pymysql.connect(host='127.0.0.1', user='root', password='Wjhyy1.',port=3306)
 # 创建游标
 cursor = db.cursor()
 
@@ -52,7 +52,7 @@ def choose_cluster(cluster_name: str):
         "elasticsearch_jvm_gc_collection_seconds_sum")
     return res
 
-
+# 集群层面
 @show_blue.route("/get_cluster_data/<cluster_name>", methods=['GET'])
 def get_cluster_data(cluster_name: str):
     cluster_name = cluster_name.replace("-", "_")
@@ -79,10 +79,11 @@ def get_cluster_data(cluster_name: str):
 
     return res
 
-
+# 单节点单指标
 @show_blue.route("/get_node_single_data/<cluster_name>/<metric_name>",methods=['POST'])
 def get_node_single_data(cluster_name: str, metric_name: str):
     nodes_name = list(request.values.getlist("nodes_name"))
+    print("here")
     print(nodes_name)
     cluster_name = cluster_name.replace("-", "_")
     database_sql = "USE " + cluster_name
@@ -98,6 +99,7 @@ def get_node_single_data(cluster_name: str, metric_name: str):
         res[node_name]['y_data_list'] = datas[1]
     return res
 
+# 单节点多指标
 @show_blue.route("/get_node_multi_data/<cluster_name>/<metric_name>",methods=['POST'])
 def get_node_multi_data(cluster_name: str, metric_name: str):
     nodes_name = list(request.values.getlist("nodes_name"))

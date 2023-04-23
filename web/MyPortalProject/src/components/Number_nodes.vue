@@ -1,12 +1,7 @@
 <template>
-    <div class="chart" style="display: flex;">
-      <div style="width:80%;">
-        <div id="Number_nodes" style="width: 100%;height: 520px;margin-top: 50px;margin-bottom: 50px"></div>
-      </div> 
-      <div style="width:20%;text-align: center;">
-        <el-button type="primary" @click="onSubmit" style="margin-top:50%" >点击显示</el-button>
-      </div>
-    </div> 
+
+      <div id="Number_nodes" style="width: 100%;height: 520px;margin-top: 50px;margin-bottom: 50px"></div>
+     
 </template>
  
 <script>
@@ -61,10 +56,7 @@ export default {
           ]
 
           })
-      },
-      onSubmit(){
-        
-    }
+      }
   },
   //调用
   mounted() {

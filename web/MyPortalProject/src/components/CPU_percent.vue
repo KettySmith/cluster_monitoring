@@ -1,134 +1,42 @@
 <template>
-    <div class="chart" style="display: flex;">
-      <div style="width:80%;">
-        <div id="CPU_percent" style="width: 100%;height: 520px;margin-top: 50px;margin-bottom: 50px"></div>
-      </div> 
-      <div style="width:20%;text-align: center;">
-        <el-select
-            v-model="selectedArr"
-            multiple
-            collapse-tags
-            filterable
-            style="margin-top:50%;"
-            placeholder="请选择"
-            @change='changeSelect'>
-            <el-checkbox v-model="checked" @change='selectAll' style="text-align: right;width: 90%;">全选</el-checkbox>
-            <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-            </el-option>
-        </el-select>
-        <el-button type="primary" @click="onSubmit" style="margin-top:50%" >查询</el-button>
-      </div>
-    </div> 
+  <div class="chart" style="display: flex;">
+    <div style="width:80%;">
+      <div v-if="data_show" id="CPU_percent" style="width: 100%;height: 520px;margin-top: 50px;margin-bottom: 50px"></div>
+      <div v-else style="width: 100%;height: 520px;margin-top: 50px;margin-bottom: 50px;box-shadow: 0 2px 4px rgba(0, 0, 0, .4);display: flex;justify-content: center;align-items: center;">
+            <h1 style="color:#9d9d9d;">暂无数据</h1>
+        </div>
+    </div>
+    <div style="width:20%;text-align: center;">
+      <el-select v-model="value" multiple collapse-tags filterable style="margin-top:50%;" placeholder="请选择"
+        @change='changeSelect'>
+        <el-checkbox v-model="checked" @change='selectAll' style="text-align: right;width: 90%;">全选</el-checkbox>
+        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+        </el-option>
+      </el-select>
+      <el-button type="primary" @click="node_query" style="margin-top:50%">查询</el-button>
+    </div>
+  </div>
 </template>
  
 <script>
 import * as echarts from 'echarts'
+import axios from 'axios'
 export default {
   name: '',
   data() {
-      return {
-          CPU_percent: '',
-          node_list:[],
-          xaxis_date:'',
-          checked: false,
-          selectedArr: [],
-          options: [{
-          value: '选项1',
-          label: 'node1'
-        }, {
-          value: '选项2',
-          label: 'node2'
-        }, {
-          value: '选项3',
-          label: 'node3'
-        }, {
-          value: '选项4',
-          label: 'node4'
-        }, {
-          value: '选项5',
-          label: 'node5'
-        }]
-
-      }
+    return {
+      data_show:false,
+      CPU_percent: '',
+      node_list: [],
+      xaxis_date: '',
+      checked: false,
+      selectedArr: [],
+      options: [],
+      value: [],
+      cluster_name: ''
+    }
   },
   methods: {
-    drawLine(id) {
-        this.CPU_percent = echarts.init(document.getElementById(id))
-        this.CPU_percent.setOption({
-        title: {
-            text: 'CPU Percent'
-        },
-        tooltip: {
-            trigger: 'axis'
-        },
-        legend: {
-            data: ['node1', 'node2', 'node3', 'node4', 'node5']
-        //   data:node_list
-        },
-        grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-        },
-        toolbox: {
-            feature: {
-            saveAsImage: {}
-            }
-        },
-        xAxis: {
-            type: 'category',
-            boundaryGap: false,
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-        //   data:xaxis_date
-        },
-        yAxis: {
-            type: 'value'
-        },
-        series: [
-            {
-            smooth: true,
-            name: 'node1',
-            type: 'line',
-            stack: 'Total',
-            data: [120, 132, 101, 134, 90, 230, 210]
-            },
-            {
-            smooth: true,
-            name: 'node2',
-            type: 'line',
-            stack: 'Total',
-            data: [220, 182, 191, 234, 290, 330, 310]
-            },
-            {
-            smooth: true,
-            name: 'node3',
-            type: 'line',
-            stack: 'Total',
-            data: [150, 232, 201, 154, 190, 330, 410]
-            },
-            {
-            smooth: true,
-            name: 'node4',
-            type: 'line',
-            stack: 'Total',
-            data: [320, 332, 301, 334, 390, 330, 320]
-            },
-            {
-            smooth: true,
-            name: 'node5',
-            type: 'line',
-            stack: 'Total',
-            data: [820, 932, 901, 934, 1290, 1330, 1320]
-            }
-        ]
-
-        })
-    },
     selectAll() {
       this.selectedArr = []
       if (this.checked) {
@@ -146,16 +54,83 @@ export default {
         this.checked = false
       }
     },
-      onSubmit(){
-
+    node_query() {
+      this.data_show=!this.data_show;
+      console.log(this.options)
+      console.log("here:", this.value)
+      const params = new URLSearchParams();
+      for (var i = 0; i < this.value.length; i++) {
+        params.append("nodes_name", this.value[i])
       }
-    },
+      axios.post('http://127.0.0.1:8090/show/get_node_single_data/' + this.cluster_name + '/elasticsearch_process_cpu_percent',
+        params, {
+        headers: { 'content-type': 'application/x-www-form-urlencoded' }
+      })//单指标和多指标都哟headers
+        .then((res) => {
+          //获取到数据
+          this.CPU_percent = echarts.init(document.getElementById('CPU_percent'))
+          var option = {
+            title: {
+              text: 'CPU Percent'
+            },
+            tooltip: {
+              trigger: 'axis'
+            },
+            grid: {
+              left: '3%',
+              right: '4%',
+              bottom: '3%',
+              containLabel: true
+            },
+            toolbox: {
+              feature: {
+                saveAsImage: {}
+              }
+            },
+            legend: {
+              data: []
+            },
+            xAxis:{data:[]},
+            yAxis: {},
+            series: []
+          };
+          var item = function () {
+            return {
+              smooth: true,
+              name: '',
+              type: 'line',
+              stack: 'Total',
+              data: []
+            }
+          };
+          var legends = [];// 准备存放图例数据
+          var Series = []; // 准备存放图表数据
+        console.log(res.data)
+
+          for(var i = 0;i< Object.keys(res.data).length;i++){
+            var key = Object.keys(res.data)[i];
+            console.log(key)
+            var it = new item;
+            it.name = key;
+            legends.push(key);
+            console.log(res.data[key])
+            it.data = res.data[key].y_data_list;
+            Series.push(it);
+
+          }
+          option.xAxis.data = res.data[Object.keys(res.data)[0]].x_data_list;
+          option.legend.data = legends;
+          option.series = Series;
+          this.CPU_percent.setOption(option);
+
+        })
+
+    }
+  },
   //调用
   mounted() {
-      this.$nextTick(function() {
-          this.drawLine('CPU_percent')
-      })
+    
   }
-  
-  }
+
+}
 </script>

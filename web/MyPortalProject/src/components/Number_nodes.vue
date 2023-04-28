@@ -1,6 +1,6 @@
 <template>
 
-      <div id="Number_nodes" style="width: 100%;height: 520px;margin-top: 50px;margin-bottom: 50px"></div>
+      <div id="Number_nodes" style="width: 100%;height: 520px;margin-top: 50px;margin-bottom: 50px;"></div>
      
 </template>
  
@@ -19,9 +19,9 @@ export default {
       drawLine(id) {
           this.Number_nodes = echarts.init(document.getElementById(id))
           this.Number_nodes.setOption({
-          title: {
-              text: 'Number of Nodes'
-          },
+        //   title: {
+        //       text: 'Number of Nodes'
+        //   },
           tooltip: {
               trigger: 'axis'
           },

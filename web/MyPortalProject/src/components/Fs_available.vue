@@ -7,7 +7,7 @@
         </div>
     </div>
     <div style="width:20%;text-align: center;">
-      <el-select v-model="value" multiple collapse-tags filterable style="margin-top:50%;" placeholder="请选择"
+      <el-select v-model="selectedArr" multiple collapse-tags filterable style="margin-top:50%;" placeholder="请选择"
         @change='changeSelect'>
         <el-checkbox v-model="checked" @change='selectAll' style="text-align: right;width: 90%;">全选</el-checkbox>
         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
@@ -32,7 +32,6 @@ export default {
       checked: false,
       selectedArr: [],
       options: [],
-      value: [],
       cluster_name: ''
     }
   },
@@ -55,12 +54,19 @@ export default {
       }
     },
     node_query() {
-      this.data_show=!this.data_show;
+      if(this.selectedArr.length==0){
+        this.$message({
+          message: "选择为空！",
+          type: 'warning'
+        });
+      }
+      else{
+        this.data_show=!this.data_show;
       console.log(this.options)
-      console.log("here:", this.value)
+      console.log("here:", this.selectedArr)
       const params = new URLSearchParams();
-      for (var i = 0; i < this.value.length; i++) {
-        params.append("nodes_name", this.value[i])
+      for (var i = 0; i < this.selectedArr.length; i++) {
+        params.append("nodes_name", this.selectedArr[i])
       }
       axios.post('http://127.0.0.1:8090/show/get_node_multi_data/' + this.cluster_name + '/elasticsearch_filesystem_data_available_bytes',
         params, {
@@ -70,9 +76,9 @@ export default {
           //获取到数据
           this.Fs_available = echarts.init(document.getElementById('Fs_available'))
           var option = {
-            title: {
-              text: 'Fs Available'
-            },
+            // title: {
+            //   text: 'Fs Available'
+            // },
             tooltip: {
               trigger: 'axis'
             },
@@ -125,6 +131,8 @@ export default {
 
         })
 
+      }
+     
     }
   },
   //调用

@@ -70,9 +70,9 @@ export default {
           //获取到数据
           this.Query_time = echarts.init(document.getElementById('Query_time'))
           var option = {
-            title: {
-              text: 'Query Time'
-            },
+            // title: {
+            //   text: 'Query Time'
+            // },
             tooltip: {
               trigger: 'axis'
             },

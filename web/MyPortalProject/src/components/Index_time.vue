@@ -7,7 +7,7 @@
         </div>
     </div>
     <div style="width:20%;text-align: center;">
-      <el-select v-model="value" multiple collapse-tags filterable style="margin-top:50%;" placeholder="请选择"
+      <el-select v-model="selectedArr" multiple collapse-tags filterable style="margin-top:50%;" placeholder="请选择"
         @change='changeSelect'>
         <el-checkbox v-model="checked" @change='selectAll' style="text-align: right;width: 90%;">全选</el-checkbox>
         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
@@ -32,7 +32,6 @@ export default {
       checked: false,
       selectedArr: [],
       options: [],
-      value: [],
       cluster_name: ''
     }
   },
@@ -84,12 +83,19 @@ export default {
       }
     },
     node_query() {
-      this.data_show=!this.data_show;
+      if(this.selectedArr.length==0){
+        this.$message({
+          message: "选择为空！",
+          type: 'warning'
+        });
+      }
+      else{
+      this.data_show=true;
       console.log(this.options)
-      console.log("here:", this.value)
+      console.log("here:", this.selectedArr)
       const params = new URLSearchParams();
-      for (var i = 0; i < this.value.length; i++) {
-        params.append("nodes_name", this.value[i])
+      for (var i = 0; i < this.selectedArr.length; i++) {
+        params.append("nodes_name", this.selectedArr[i])
       }
       axios.post('http://127.0.0.1:8090/show/get_node_single_data/' + this.cluster_name + '/elasticsearch_indices_indexing_index_time_seconds_total',
         params, {
@@ -97,11 +103,18 @@ export default {
       })//单指标和多指标都哟headers
         .then((res) => {
           //获取到数据
-          this.Index_time = echarts.init(document.getElementById('Index_time'))
+          let myChart = echarts.getInstanceByDom(document.getElementById("Index_time"));
+          if(myChart==null){
+            this.Index_time = echarts.init(document.getElementById('Index_time'))
+          }
+          else{
+            this.Index_time.clear()
+            this.Index_time = echarts.init(document.getElementById('Index_time'))
+          }
           var option = {
-            title: {
-              text: 'Index Time'
-            },
+            // title: {
+            //   text: 'Index Time'
+            // },
             tooltip: {
               trigger: 'axis'
             },
@@ -146,13 +159,15 @@ export default {
             it.data = res.data[key].y_data_list;
             Series.push(it);
 
-          }
+          } 
           option.xAxis.data = res.data[Object.keys(res.data)[0]].x_data_list;
           option.legend.data = legends;
           option.series = Series;
           this.Index_time.setOption(option);
 
         })
+      }
+      
 
     }
   },

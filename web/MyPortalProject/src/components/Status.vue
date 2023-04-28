@@ -19,9 +19,9 @@ export default {
       drawLine(id) {
           this.Status = echarts.init(document.getElementById(id))
           this.Status.setOption({
-          title: {
-              text: 'Status'
-          },
+        //   title: {
+        //       text: 'Status'
+        //   },
           tooltip: {
               trigger: 'axis'
           },

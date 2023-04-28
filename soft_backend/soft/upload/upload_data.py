@@ -38,6 +38,7 @@ def create_database(database_name: str):
     # 创建数据库的sql(如果数据库存在就不创建，防止异常)
     sql = "CREATE DATABASE IF NOT EXISTS " + database_name+""
     # 执行创建数据库的sql
+    print(sql)
     cursor.execute(sql)
     db.commit()
     # 使用当前数据库

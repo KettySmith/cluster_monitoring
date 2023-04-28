@@ -4,11 +4,12 @@ import pymysql
 import csv
 
 # 创建连接
-db = pymysql.connect(host='127.0.0.1', user='root', password='Wjhyy1.',port=3306)
+db = pymysql.connect(host='192.168.23.140', user='root', password='soft_test', port=3307)
 # 创建游标
 cursor = db.cursor()
 
-@upload_blue.route("/upload_all_files",methods=['POST'])
+
+@upload_blue.route("/upload_all_files", methods=['POST'])
 def upload_all_files(all_file_root_input: str = "2套集群数据"):
     # 获取数据集所在路径
     # root = os.path.dirname(os.path.dirname(os.getcwd()))
@@ -20,8 +21,10 @@ def upload_all_files(all_file_root_input: str = "2套集群数据"):
     file_root_list = os.listdir(all_file_root)
     for file_root in file_root_list:
         # 导入每一个目录（集群）的数据
-        if(os.path.isdir(os.path.join(all_file_root, file_root))):
+        print("start")
+        if (os.path.isdir(os.path.join(all_file_root, file_root))):
             upload_each_file(file_root, os.path.join(all_file_root, file_root))
+        print("finish")
     return "success"
 
 
@@ -33,10 +36,10 @@ def upload_each_file(cluster_name: str, file_root_path: str):
 
 
 def create_database(database_name: str):
-    database_name = database_name.replace("-","_")
+    database_name = database_name.replace("-", "_")
     print(database_name)
     # 创建数据库的sql(如果数据库存在就不创建，防止异常)
-    sql = "CREATE DATABASE IF NOT EXISTS " + database_name+""
+    sql = "CREATE DATABASE IF NOT EXISTS " + database_name + ""
     # 执行创建数据库的sql
     print(sql)
     cursor.execute(sql)
@@ -50,7 +53,7 @@ def create_database(database_name: str):
 def dfs_create_table(file_root_path: str):
     count = 0
     for path, file_dir, files in os.walk(file_root_path):
-        if count==1:
+        if count == 1:
             break
         # 为文件，创建数据表
         for file_name in files:
@@ -61,16 +64,19 @@ def dfs_create_table(file_root_path: str):
         # 为目录，递归创建
         for dir in file_dir:
             dfs_create_table(os.path.join(file_root_path, dir))
-        count+=1
+        count += 1
 
 
 def create_table(table_name: str, file_path: str):
-    table_name = table_name.split(".")[0].split("==")[1]
-    table_name = table_name.replace("-","_").replace("=","_")
-    drop_sql = "DROP TABLE IF EXISTS "+table_name
+    if table_name.find(".") != -1 and table_name.find("==") != -1:
+        table_name = table_name.split(".")[0].split("==")[1]
+    elif table_name.find(".") != -1:
+        table_name = "abnormal" + table_name.split(".")[0]
+    drop_sql = "DROP TABLE IF EXISTS " + table_name
     cursor.execute(drop_sql)
     db.commit()
     # 获取csv文件第一行
+    print(file_path)
     with open(file_path, 'r') as f:
         reader = csv.reader(f)
         result = list(reader)
@@ -104,7 +110,8 @@ def insert_data(insert_sql: str, file_path: str):
         cursor.executemany(insert_sql, insert_datas)
         db.commit()
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     database_name = "cc-cc408-hya"
     database_name = database_name.replace("-", "_")
     print(database_name)

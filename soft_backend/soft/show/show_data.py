@@ -1,10 +1,9 @@
 from .init import show_blue
 from flask import request
-import os
 import pymysql
 
 # 创建连接
-db = pymysql.connect(host='127.0.0.1', user='root', password='Wjhyy1.',port=3306)
+db = pymysql.connect(host='192.168.23.140', user='root', password='soft_test', port=3307)
 # 创建游标
 cursor = db.cursor()
 
@@ -52,6 +51,7 @@ def choose_cluster(cluster_name: str):
         "elasticsearch_jvm_gc_collection_seconds_sum")
     return res
 
+
 # 集群层面
 @show_blue.route("/get_cluster_data/<cluster_name>", methods=['GET'])
 def get_cluster_data(cluster_name: str):
@@ -79,12 +79,11 @@ def get_cluster_data(cluster_name: str):
 
     return res
 
+
 # 单节点单指标
-@show_blue.route("/get_node_single_data/<cluster_name>/<metric_name>",methods=['POST'])
+@show_blue.route("/get_node_single_data/<cluster_name>/<metric_name>", methods=['POST'])
 def get_node_single_data(cluster_name: str, metric_name: str):
     nodes_name = list(request.values.getlist("nodes_name"))
-    print("here")
-    print(nodes_name)
     cluster_name = cluster_name.replace("-", "_")
     database_sql = "USE " + cluster_name
     cursor.execute(database_sql)
@@ -92,18 +91,17 @@ def get_node_single_data(cluster_name: str, metric_name: str):
     res = dict()
     # 根据需要查询的节点名称去查询
     for node_name in nodes_name:
-        print(node_name)
         res[node_name] = dict()
         datas = select_node_single_data(metric_name, node_name)
         res[node_name]['x_data_list'] = datas[0]
         res[node_name]['y_data_list'] = datas[1]
     return res
 
+
 # 单节点多指标
-@show_blue.route("/get_node_multi_data/<cluster_name>/<metric_name>",methods=['POST'])
+@show_blue.route("/get_node_multi_data/<cluster_name>/<metric_name>", methods=['POST'])
 def get_node_multi_data(cluster_name: str, metric_name: str):
     nodes_name = list(request.values.getlist("nodes_name"))
-    print(nodes_name)
     cluster_name = cluster_name.replace("-", "_")
     database_sql = "USE " + cluster_name
     cursor.execute(database_sql)
@@ -111,12 +109,59 @@ def get_node_multi_data(cluster_name: str, metric_name: str):
     res = dict()
     # 根据需要查询的节点名称去查询
     for node_name in nodes_name:
-        print(node_name)
         res[node_name] = dict()
         datas = select_node_multi_data(metric_name, node_name)
         res[node_name]['x_data_list'] = datas[0]
         res[node_name]['y_data_list'] = datas[1]
     return res
+
+
+# 获取相似度比对的数据表名
+@show_blue.route("/get_similarity_node", methods=['GET'])
+def get_similarity_node(filename="AIBMA-ES-CLUSTER-20230423"):
+    database_name = filename.replace("-", "_")
+    database_sql = "USE " + database_name
+    cursor.execute(database_sql)
+    db.commit()
+    res = []
+    # 查询表名
+    sql = "select table_name from information_schema.tables where table_schema='AIBMA_ES_CLUSTER_20230423' and table_type='base table' order by cast(substr(table_name,9,length(table_name)) as signed ) asc;"
+    cursor.execute(sql)
+    ret = cursor.fetchall()
+    for item in ret:
+        res.append(item[0])
+    return res
+
+
+# 根据输入的表名获取相似度信息
+@show_blue.route("/get_similarity_data", methods=['POST'])
+def get_similarity_data():
+    nodes_name = list(request.values.getlist("nodes_name"))
+    database_sql = "USE AIBMA_ES_CLUSTER_20230423"
+    cursor.execute(database_sql)
+    db.commit()
+    res = dict()
+    # 根据需要查询的节点名称去查询
+    for node_name in nodes_name:
+        res[node_name] = dict()
+        datas = select_node_similarity_data(node_name)
+        res[node_name]['x_data_list'] = datas[0]
+        res[node_name]['y_data_list'] = datas[1]
+    return res
+
+
+def select_node_similarity_data(table_name):
+    sql = "select date,value from " + table_name + " where date!='' and value!=''"
+    print(sql)
+    cursor.execute(sql)
+    datas = cursor.fetchall()
+    x_data_list = []
+    y_data_list = []
+    for data in datas:
+        x_data_list.append(data[0])
+        y_data_list.append(data[1])
+    return x_data_list, y_data_list
+
 
 def select_single_node(table_name):
     sql = "select distinct node_name from " + table_name + " order by node_name asc"
@@ -162,13 +207,13 @@ def select_node_single_data(table_name, node_name):
     for data in datas:
         x_data_list.append(data[0])
         y_data_list.append(data[1])
-    return x_data_list,y_data_list
+    return x_data_list, y_data_list
 
 
 def select_node_multi_data(table_name, node_name):
-    if table_name=="elasticsearch_filesystem_data_available_bytes":
+    if table_name == "elasticsearch_filesystem_data_available_bytes":
         sql = "select date,value from " + table_name + " where concat(concat(node_name,'---'),mount) = %s"
-    elif table_name=="elasticsearch_jvm_gc_collection_seconds_sum":
+    elif table_name == "elasticsearch_jvm_gc_collection_seconds_sum":
         sql = "select date,value from " + table_name + " where concat(concat(node_name,'---'),gc) = %s"
     cursor.execute(sql, node_name)
     datas = cursor.fetchall()
@@ -178,6 +223,7 @@ def select_node_multi_data(table_name, node_name):
         x_data_list.append(data[0])
         y_data_list.append(data[1])
     return x_data_list, y_data_list
+
 
 if __name__ == '__main__':
     database_sql = "USE cc_cc408_hya"

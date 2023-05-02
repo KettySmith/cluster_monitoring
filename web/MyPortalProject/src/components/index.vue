@@ -1,5 +1,33 @@
 <template>
-  <div class="cluster_container">
+
+
+
+
+
+
+<div class="cluster_container">
+
+  <!-- <el-menu 
+  :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+    <el-menu-item index="1">处理中心</el-menu-item>
+    <el-menu-item index="2"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
+  </el-menu>
+  <div class="line"></div> -->
+  <el-menu
+    :default-active="activeIndex2"
+    class="el-menu-demo"
+    mode="horizontal"
+    @select="handleSelect"
+    background-color="#545c64"
+    text-color="#fff"
+    active-text-color="#ffd04b">
+    <el-menu-item index="1">处理中心</el-menu-item>
+    <el-menu-item index="2"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
+  </el-menu>
+
+
+
+
     <div class="panelgroup" style="width:100%;height:200px;font-size:30px;">
       集群名称
       <el-select v-model="value" clearable placeholder="请选择" style="margin-left: 5%;">
@@ -105,15 +133,10 @@ export default {
           label: 'cc-cc553-interestPrice'
         }],
         value: '',
-        truth_value:''
+        truth_value:'',
+        activeIndex: '1',
+        activeIndex2: '0'
 
-        //集群图
-        // Active_shards_data_show:false,
-        // Active_shards:'',
-        // Number_nodes_data_show:false,
-        // Number_nodes:'',
-        // Status_data_show:false,
-        // Status:''
     }
   },
   created() {
@@ -122,9 +145,7 @@ export default {
 
   methods: {
     refresh(){
-      // this.Active_shards_data_show=false;
-      // this.Number_nodes_data_show=false;
-      // this.Status_data_show=false;
+      
       axios.post('http://127.0.0.1:8090/upload/upload_all_files')
       .then((res)=>{
         // console.log(res.data)
@@ -250,95 +271,11 @@ export default {
       })
 
       }
+    },
+
+    handleSelect(key, keyPath) {
+        console.log(key, keyPath);
     }
-    // cluster_show(){//集群数据查询 
-    
-    //   axios.get('http://127.0.0.1:8090/show/get_cluster_data/'+this.truth_value
-    //   ).then((res)=>{
-        
-    //   this.Active_shards_data_show=true;
-    //   this.Number_nodes_data_show=true;
-    //   this.Status_data_show=true;
-
-    //    //集群表格初始化
-    //    this.Active_shards= echarts.init(document.getElementById('Active_shards'))
-    //     this.Number_nodes= echarts.init(document.getElementById('Number_nodes'))
-    //     this.Status= echarts.init(document.getElementById('Status'))
-      
-    //   var option={
-    //         tooltip: {
-    //           trigger: 'axis'
-    //       },
-          
-    //       grid: {
-    //           left: '3%',
-    //           right: '4%',
-    //           bottom: '3%',
-    //           containLabel: true
-    //       },
-    //       toolbox: {
-    //           feature: {
-    //           saveAsImage: {}
-    //           }
-    //       },
-    //       xAxis: {
-    //           type: 'category',
-    //           boundaryGap: false,
-    //         //   data: xaxis_date
-    //           data: []
-    //       },
-    //       yAxis: {
-    //           type: 'value'
-    //       },
-    //       series: [
-    //           {
-    //           type: 'line',
-    //         //   data: yaxis_value,
-    //           data:[],
-    //           smooth: true
-    //           }
-    //         ]
-    //     }
-
-    //     var option1=option
-    //     var option2=option
-    //     var option3=option
-
-    //     option1.xAxis.data=res.data[Object.keys(res.data)[0]].x_data_list
-    //     option1.series.data=res.data[Object.keys(res.data)[0]].y_data_list
-    //     this.Active_shards.setOption(option1)
-    //     option2.xAxis.data=res.data[Object.keys(res.data)[1]].x_data_list
-    //     option2.series.data=res.data[Object.keys(res.data)[1]].y_data_list
-    //     this.Active_shards.setOption(option2)
-    //     option3.xAxis.data=res.data[Object.keys(res.data)[2]].x_data_list
-    //     option3.series.data=res.data[Object.keys(res.data)[2]].y_data_list
-    //     this.Active_shards.setOption(option3)
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //     // this.$refs.Active_shards_cluster.option.xAxis.data= res.data(Object.keys(res.data)[0]).x_data_list
-    //     // this.$refs.Active_shards_cluster.option.series.data= res.data(Object.keys(res.data)[0]).y_data_list
-    //     // this.$refs.Active_shards_cluster.Active_shards.setOption(this.$refs.Active_shards_cluster.option)
-
-
-
-
-    //   }
-    //   )
-
-
-    // }
-    
 
 
   }

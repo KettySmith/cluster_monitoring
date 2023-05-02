@@ -36,35 +36,6 @@ export default {
     }
   },
   methods: {
-    // drawLine(id) {
-    //   this.Index_time.setOption(option);
-    //   this.Index_time = echarts.init(document.getElementById('Index_time'))
-    //   var option = {
-    //     title: {
-    //       text: 'Index Time'
-    //     },
-    //     tooltip: {
-    //       trigger: 'axis'
-    //     },
-    //     grid: {
-    //       left: '3%',
-    //       right: '4%',
-    //       bottom: '3%',
-    //       containLabel: true
-    //     },
-    //     toolbox: {
-    //       feature: {
-    //         saveAsImage: {}
-    //       }
-    //     },
-    //     legend: {
-    //       data: []
-    //     },
-    //     xAxis: {},
-    //     yAxis: {},
-    //     series: []
-    //   };
-    // },
     selectAll() {
       this.selectedArr = []
       if (this.checked) {

@@ -12,15 +12,21 @@ cursor = db.cursor()
 # 相似度比对
 @search_blue.route("/similarity_search", methods=['POST'])
 def similarity_search():
-    input_json = request.get_json(force=True)
-    print(input_json)
-    rank = int(input_json['rank'])  # top10=>rank=10  top5=>rank=5
-    ab_node = str(input_json['ab_node'])    # 异常数据表名
-    start_time = str(input_json['start_time'])  # 开始时间
-    end_time = str(input_json['end_time'])  # 截止时间
+    # input_json = request.form(force=True)
+    # print(input_json)
+    # rank = int(input_json['rank'])  # top10=>rank=10  top5=>rank=5
+    # ab_node = str(input_json['ab_node'])    # 异常数据表名
+    # start_time = str(input_json['start_time'])  # 开始时间
+    # end_time = str(input_json['end_time'])  # 截止时间
+
+    rank = int(request.form['rank'])  # top10=>rank=10  top5=>rank=5
+    ab_node = request.form['ab_node']   # 异常数据表名
+    start_time = request.form['start_time']  # 开始时间
+    end_time = request.form['end_time']  # 截止时间
     # 相似度分析
     res = process_similarity(rank, ab_node, start_time, end_time)
     #todo: 处理结果
+    print(res)
     return res
 
 

@@ -1,4 +1,4 @@
-# from .init import search_blue
+from .init import search_blue
 from flask import request
 import pymysql
 from dtw import *
@@ -10,7 +10,7 @@ cursor = db.cursor()
 
 
 # 相似度比对
-# @search_blue.route("/similarity_search", methods=['POST'])
+@search_blue.route("/similarity_search", methods=['POST'])
 def similarity_search():
     input_json = request.get_json(force=True)
     print(input_json)

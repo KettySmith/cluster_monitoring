@@ -13,9 +13,11 @@ def hello_world():
 
 from show.init import show_blue
 from upload.init import upload_blue
+from search.init import search_blue
 
 app.register_blueprint(show_blue)
 app.register_blueprint(upload_blue)
+app.register_blueprint(search_blue)
 
 if __name__ == '__main__':
     app.run(port=8090)

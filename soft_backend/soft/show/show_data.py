@@ -3,7 +3,7 @@ from flask import request
 import pymysql
 
 # 创建连接
-db = pymysql.connect(host='192.168.23.140', user='root', password='soft_test', port=3307)
+db = pymysql.connect(host='localhost', user='tester', password='test', port=3306)
 # 创建游标
 cursor = db.cursor()
 
@@ -125,7 +125,7 @@ def get_similarity_node(filename="AIBMA-ES-CLUSTER-20230423"):
     db.commit()
     res = []
     # 查询表名
-    sql = "select table_name from information_schema.tables where table_schema='AIBMA_ES_CLUSTER_20230423' and table_type='base table' order by cast(substr(table_name,9,length(table_name)) as signed ) asc;"
+    sql = "select table_name from information_schema.tables where table_schema='AIBMA_ES_CLUSTER_20230423' order by cast(substr(table_name,9,length(table_name)) as signed ) asc;"
     cursor.execute(sql)
     ret = cursor.fetchall()
     for item in ret:

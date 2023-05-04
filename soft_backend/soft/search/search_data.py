@@ -1,4 +1,4 @@
-from .init import search_blue
+# from .init import search_blue
 from flask import request
 import pymysql
 from dtw import *
@@ -10,7 +10,7 @@ cursor = db.cursor()
 
 
 # 相似度比对
-@search_blue.route("/similarity_search", methods=['POST'])
+# @search_blue.route("/similarity_search", methods=['POST'])
 def similarity_search():
     input_json = request.get_json(force=True)
     print(input_json)
@@ -47,11 +47,13 @@ def process_similarity(rank: int, ab_node:str, start_time: str, end_time: str):
                         dist_method="euclidean",
                         step_pattern=asymmetric,
                         keep_internals=True)
-        alignment.plot(type="twoway", offset=1)
+        # alignment.plot(type="twoway", offset=1, ylab=curr_node)
         # 将相似度分析结果加入list
         node_simi = dict()
         node_simi['node_name'] = curr_node
         node_simi['simi_value'] = alignment.__getattribute__('distance')
+        node_simi['x_data_list'] = refer['x_data_list']
+        node_simi['y_data_list'] = refer['y_data_list']
         simi_list.append(node_simi)
     # 按相似度大小排序，只返回rank个最相似序列
     simi_list.sort(key=lambda e:e['simi_value'])
@@ -85,8 +87,8 @@ def get_similarity_data(nodes_name:list, ab_node:str, start_time:str, end_time:s
     for node_name in nodes_name:
         res[node_name] = dict()
         datas = select_node_similarity_data(node_name, ab_node == node_name, start_time, end_time)
-        res[node_name]['y_data_list'] = datas
-        res[node_name]['simi_value'] = 0
+        res[node_name]['x_data_list'] = datas[0]
+        res[node_name]['y_data_list'] = datas[1]
     return res
 
 
@@ -98,21 +100,25 @@ def select_node_similarity_data(table_name:str, isQuery:bool, start_time:str, en
     datas = cursor.fetchall()
     start_id, end_id = datas[0][0], datas[1][0]
     
-    sql = "select id,value from " + table_name + " where date!=''" 
+    sql = "select id,date,value from " + table_name + " where date!=''" 
     cursor.execute(sql)
     datas = cursor.fetchall()
+    x_data_list = []
     y_data_list = []
     # 对于对比序列，考虑波动提前/延后的情况，将对比时间段边界放宽
     for data in datas:
         if(not isQuery and data[0] >= start_id-2 and data[0] < start_id):
-            y_data_list.append(float(data[1]))
+            x_data_list.append(data[1])
+            y_data_list.append(float(data[2]))
         elif(data[0] >= start_id and data[0] <= end_id):
-            y_data_list.append(float(data[1]))
+            x_data_list.append(data[1])
+            y_data_list.append(float(data[2]))
         elif(not isQuery and data[0] > end_id and data[0] <= end_id + 2):
-            y_data_list.append(float(data[1]))
+            x_data_list.append(data[1])
+            y_data_list.append(float(data[2]))
         elif(data[0] > end_id+2):
             break
-    return y_data_list
+    return x_data_list, y_data_list
 
 
 if __name__ == '__main__':

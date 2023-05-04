@@ -4,7 +4,7 @@ import pymysql
 from dtw import *
 
 # 创建连接
-db = pymysql.connect(host='localhost', user='tester', password='test', port=3306)
+db = pymysql.connect(host='rm-cn-lbj37bbhw0012n9o.rwlb.rds.aliyuncs.com', user='root', password='SOFT_test', port=3306)
 # 创建游标
 cursor = db.cursor()
 

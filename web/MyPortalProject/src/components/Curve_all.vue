@@ -48,80 +48,80 @@ export default {
             )
 
 
-            // const params = new URLSearchParams();
-            // for (var i = 0; i < this.table_arr.length; i++) {
-            //     params.append("nodes_name", this.table_arr[i])
-            // }
-            // console.log(params)
-            // axios.post('http://127.0.0.1:8090/show/get_similarity_data',
-            //     params, {
-            //     headers: { 'content-type': 'application/x-www-form-urlencoded' }
-            // })//单指标和多指标都哟headers
-            //     .then((res) => {
-            //         console.log(res.data)
-            //         let myChart = echarts.getInstanceByDom(document.getElementById("Curve_all"))
-            //         if(myChart==null){
-            //         this.Curve_all = echarts.init(document.getElementById('Curve_all'))
-            //         }
-            //         else{
-            //         this.Curve_all.clear()
-            //         this.Curve_all = echarts.init(document.getElementById('Curve_all'))
-            //         }
-            //         var option = {
-            //           title: {
-            //             text: 'Abnormal data'
-            //           },
-            //           tooltip: {
-            //             trigger: 'axis'
-            //           },
-            //           grid: {
-            //             left: '3%',
-            //             right: '4%',
-            //             bottom: '3%',
-            //             containLabel: true
-            //           },
-            //           toolbox: {
-            //             feature: {
-            //               saveAsImage: {}
-            //             }
-            //           },
-            //           legend: {
-            //             data: []
-            //           },
-            //           xAxis:{data:[]},
-            //           yAxis: {},
-            //           series: []
-            //         };
-            //         var item = function () {
-            //           return {
-            //             smooth: true,
-            //             name: '',
-            //             type: 'line',
-            //             stack: 'Total',
-            //             data: []
-            //           }
-            //         };
-            //         var legends = [];// 准备存放图例数据
-            //         var Series = []; // 准备存放图表数据
+            const params = new URLSearchParams();
+            for (var i = 0; i < this.table_arr.length; i++) {
+                params.append("nodes_name", this.table_arr[i])
+            }
+            console.log(params)
+            axios.post('http://127.0.0.1:8090/show/get_similarity_data',
+                params, {
+                headers: { 'content-type': 'application/x-www-form-urlencoded' }
+            })//单指标和多指标都哟headers
+                .then((res) => {
+                    console.log(res.data)
+                    let myChart = echarts.getInstanceByDom(document.getElementById("Curve_all"))
+                    if(myChart==null){
+                    this.Curve_all = echarts.init(document.getElementById('Curve_all'))
+                    }
+                    else{
+                    this.Curve_all.clear()
+                    this.Curve_all = echarts.init(document.getElementById('Curve_all'))
+                    }
+                    var option = {
+                      title: {
+                        text: 'Abnormal data'
+                      },
+                      tooltip: {
+                        trigger: 'axis'
+                      },
+                      grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                      },
+                      toolbox: {
+                        feature: {
+                          saveAsImage: {}
+                        }
+                      },
+                      legend: {
+                        data: []
+                      },
+                      xAxis:{data:[]},
+                      yAxis: {},
+                      series: []
+                    };
+                    var item = function () {
+                      return {
+                        smooth: true,
+                        name: '',
+                        type: 'line',
+                        stack: 'Total',
+                        data: []
+                      }
+                    };
+                    var legends = [];// 准备存放图例数据
+                    var Series = []; // 准备存放图表数据
 
-            //         for(var i = 0;i< Object.keys(res.data).length;i++){
-            //         var key = Object.keys(res.data)[i];
-            //         console.log(key)
-            //         var it = new item;
-            //         it.name = key;
-            //         legends.push(key);
-            //         console.log(res.data[key])
-            //         it.data = res.data[key].y_data_list;
-            //         Series.push(it);
+                    // for(var i = 0;i< Object.keys(res.data).length;i++){
+                    // var key = Object.keys(res.data)[i];
+                    // console.log(key)
+                    // var it = new item;
+                    // it.name = key;
+                    // legends.push(key);
+                    // console.log(res.data[key])
+                    // it.data = res.data[key].y_data_list;
+                    // Series.push(it);
 
-            //         } 
-            //         option.xAxis.data = res.data[Object.keys(res.data)[0]].x_data_list;
-            //         option.legend.data = legends;
-            //         option.series = Series;
-            //         this.Index_time.setOption(option);
+                    // } 
+                    // option.xAxis.data = res.data[Object.keys(res.data)[0]].x_data_list;
+                    // option.legend.data = legends;
+                    // option.series = Series;
+                    // this.Index_time.setOption(option);
 
-                // }
-                // )
+                }
+                )
 
 
 

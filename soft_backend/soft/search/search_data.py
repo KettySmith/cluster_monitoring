@@ -25,8 +25,6 @@ def similarity_search():
     end_time = request.form['end_time']  # 截止时间
     # 相似度分析
     res = process_similarity(rank, ab_node, start_time, end_time)
-    #todo: 处理结果
-    print(res)
     return res
 
 
@@ -64,6 +62,12 @@ def process_similarity(rank: int, ab_node:str, start_time: str, end_time: str):
     # 按相似度大小排序，只返回rank个最相似序列
     simi_list.sort(key=lambda e:e['simi_value'])
     simi_list = simi_list[:rank]
+
+    # 0
+    node_simi = dict()
+    node_simi['node_name'] = "abnormal0"
+    node_simi['y_data_list'] = query['y_data_list']
+    simi_list.append(node_simi)
     return simi_list
 
 

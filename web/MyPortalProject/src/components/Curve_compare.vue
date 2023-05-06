@@ -532,7 +532,12 @@ export default {
                     xAxis:{
                       data:[]
                     },
-                    yAxis: {},
+                    yAxis:[ {
+                      type:'value'
+                    },
+                  {
+                    type:'value'
+                  }],
                     series: []
                   };
                   var item = function () {
@@ -550,12 +555,14 @@ export default {
                   it1.name=this.ab_name
                   legends.push(it1.name)
                   it1.data=this.ab_y_data_list
+                  it1.yAxisIndex=0
                   Series.push(it1)
 
                   var it2=new item
                   it2.name=si_name
                   legends.push(it2.name)
                   it2.data=si_y_data_list
+                  it2.yAxisIndex=1
                   Series.push(it2)
 
                 

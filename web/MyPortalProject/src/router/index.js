@@ -9,7 +9,7 @@ export default new Router({
     {
       path: '/',
       name: 'cluster_monitor',
-      component: index
+      redirect: '/index'
     }
   ]
 })

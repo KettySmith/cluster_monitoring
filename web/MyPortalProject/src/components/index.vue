@@ -9,18 +9,19 @@
   
    
       <div class="panelgroup" style="width:100%;height:200px;font-size:30px;margin-top: 20px;">
-        集群名称
-        <el-select v-model="value" clearable placeholder="请选择" style="margin-left: 5%;">
-      <el-option
-        v-for="item in options"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value">
-      </el-option>
-    </el-select>
+        <span style="margin-left: 10%;">集群名称</span>
+        <el-select v-model="value" clearable placeholder="请选择" style="margin-left:5%;">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
         <el-button type="primary" @click="cluster_query">查询</el-button>
-        <el-button type="success" icon="el-icon-refresh-left" @click="refresh"
-          style="float:right;margin-right:100px;font-size: 30px;"></el-button>
+        <el-button type="success" style="float:right;margin-top:10px;margin-right:10%;width:120px" @click="refresh" :loading="loadingbut" >
+           {{loading_text}}
+        </el-button>
       </div>
   
   <!-- 集群 -->
@@ -113,7 +114,9 @@
             label: 'cc-cc553-interestPrice'
           }],
           value: '',
-          truth_value:''
+          truth_value:'',
+          loadingbut:false,
+          loading_text:'刷新'
   
       }
     },
@@ -123,10 +126,14 @@
   
     methods: {
       refresh(){
+        this.loadingbut=true
+        this.loading_text='加载中...'
         
         axios.post('http://127.0.0.1:8090/upload/upload_all_files')
         .then((res)=>{
           // console.log(res.data)
+          this.loadingbut=false
+          this.loading_text='刷新'
           this.$message({
             message: res.data,
             type: 'success'

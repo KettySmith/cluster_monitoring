@@ -84,7 +84,15 @@ export default {
                     //   text: 'Abnormal data'
                     // },
                     tooltip: {
-                      trigger: 'axis'
+                      trigger: 'axis',
+                      show: true,
+                      formatter: function (params) {
+                        let result = `${params[0].axisValueLabel}</br>`;
+                        params.forEach(function (item) {
+                          result += `<div style="text-align:left">${item.marker} ${item.seriesName}:<b style="float:right">${item.value}</b></div>`;
+                        });
+                        return result;
+                      },
                     },
                     grid: {
                       left: '3%',

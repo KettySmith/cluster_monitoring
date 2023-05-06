@@ -147,7 +147,7 @@
   
         if(this.truth_value==''){
           this.$message({
-            message: "选择不能为空！",
+            message: "请选择集群名称！",
             type: 'warning'
           });
         }

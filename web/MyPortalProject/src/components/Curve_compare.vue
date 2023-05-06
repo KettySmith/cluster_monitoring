@@ -28,7 +28,7 @@
             </div>
             <div style="text-align: left;">
               <h4>相似曲线名称: {{curvelist[0]}}</h4>
-              <h4>simivalue: {{similar[0]}}</h4>
+              <h4>曲线距离: {{similar[0]}}</h4>
               <h4>异常曲线start: {{ ablist_start }}</h4>
               <h4>异常曲线end: {{ ablist_end }}</h4>
               <h4>相似曲线start: {{ slist_start }}</h4>
@@ -49,7 +49,7 @@
             </div>
             <div style="text-align: left;">
               <h4>相似曲线名称: {{curvelist[1]}}</h4>
-              <h4>simivalue: {{similar[1]}}</h4>
+              <h4>曲线距离: {{similar[1]}}</h4>
               <h4>异常曲线start: {{ ablist_start }}</h4>
               <h4>异常曲线end: {{ ablist_end }}</h4>
               <h4>相似曲线start: {{ slist_start }}</h4>
@@ -70,7 +70,7 @@
             </div>
             <div style="text-align: left;">
               <h4>相似曲线名称: {{curvelist[2]}}</h4>
-              <h4>simivalue: {{similar[2]}}</h4>
+              <h4>曲线距离: {{similar[2]}}</h4>
               <h4>异常曲线start: {{ ablist_start }}</h4>
               <h4>异常曲线end: {{ ablist_end }}</h4>
               <h4>相似曲线start: {{ slist_start }}</h4>
@@ -91,7 +91,7 @@
             </div>
             <div style="text-align: left;">
               <h4>相似曲线名称: {{curvelist[3]}}</h4>
-              <h4>simivalue: {{similar[3]}}</h4>
+              <h4>曲线距离: {{similar[3]}}</h4>
               <h4>异常曲线start: {{ ablist_start }}</h4>
               <h4>异常曲线end: {{ ablist_end }}</h4>
               <h4>相似曲线start: {{ slist_start }}</h4>
@@ -112,7 +112,7 @@
             </div>
             <div style="text-align: left;">
               <h4>相似曲线名称: {{curvelist[4]}}</h4>
-              <h4>simivalue: {{similar[4]}}</h4>
+              <h4>曲线距离: {{similar[4]}}</h4>
               <h4>异常曲线start: {{ ablist_start }}</h4>
               <h4>异常曲线end: {{ ablist_end }}</h4>
               <h4>相似曲线start: {{ slist_start }}</h4>
@@ -141,7 +141,7 @@
             </div>
             <div style="text-align: left;">
               <h4>相似曲线名称: {{curvelist[0]}}</h4>
-              <h4>simivalue: {{similar[0]}}</h4>
+              <h4>曲线距离: {{similar[0]}}</h4>
               <h4>异常曲线start: {{ ablist_start }}</h4>
               <h4>异常曲线end: {{ ablist_end }}</h4>
               <h4>相似曲线start: {{ slist_start }}</h4>
@@ -162,7 +162,7 @@
             </div>
             <div style="text-align: left;">
               <h4>相似曲线名称: {{curvelist[1]}}</h4>
-              <h4>simivalue: {{similar[1]}}</h4>
+              <h4>曲线距离: {{similar[1]}}</h4>
               <h4>异常曲线start: {{ ablist_start }}</h4>
               <h4>异常曲线end: {{ ablist_end }}</h4>
               <h4>相似曲线start: {{ slist_start }}</h4>
@@ -183,7 +183,7 @@
             </div>
             <div style="text-align: left;">
               <h4>相似曲线名称: {{curvelist[2]}}</h4>
-              <h4>simivalue: {{similar[2]}}</h4>
+              <h4>曲线距离: {{similar[2]}}</h4>
               <h4>异常曲线start: {{ ablist_start }}</h4>
               <h4>异常曲线end: {{ ablist_end }}</h4>
               <h4>相似曲线start: {{ slist_start }}</h4>
@@ -204,7 +204,7 @@
             </div>
             <div style="text-align: left;">
               <h4>相似曲线名称: {{curvelist[3]}}</h4>
-              <h4>simivalue: {{similar[3]}}</h4>
+              <h4>曲线距离: {{similar[3]}}</h4>
               <h4>异常曲线start: {{ ablist_start }}</h4>
               <h4>异常曲线end: {{ ablist_end }}</h4>
               <h4>相似曲线start: {{ slist_start }}</h4>
@@ -225,7 +225,7 @@
             </div>
             <div style="text-align: left;">
               <h4>相似曲线名称: {{curvelist[4]}}</h4>
-              <h4>simivalue: {{similar[4]}}</h4>
+              <h4>曲线距离: {{similar[4]}}</h4>
               <h4>异常曲线start: {{ ablist_start }}</h4>
               <h4>异常曲线end: {{ ablist_end }}</h4>
               <h4>相似曲线start: {{ slist_start }}</h4>
@@ -247,7 +247,7 @@
             </div>
             <div style="text-align: left;">
               <h4>相似曲线名称: {{curvelist[5]}}</h4>
-              <h4>simivalue: {{similar[5]}}</h4>
+              <h4>曲线距离: {{similar[5]}}</h4>
               <h4>异常曲线start: {{ ablist_start }}</h4>
               <h4>异常曲线end: {{ ablist_end }}</h4>
               <h4>相似曲线start: {{ slist_start }}</h4>
@@ -268,7 +268,7 @@
             </div>
             <div style="text-align: left;">
               <h4>相似曲线名称: {{curvelist[6]}}</h4>
-              <h4>simivalue: {{similar[6]}}</h4>
+              <h4>曲线距离: {{similar[6]}}</h4>
               <h4>异常曲线start: {{ ablist_start }}</h4>
               <h4>异常曲线end: {{ ablist_end }}</h4>
               <h4>相似曲线start: {{ slist_start }}</h4>
@@ -289,7 +289,7 @@
             </div>
             <div style="text-align: left;">
               <h4>相似曲线名称: {{curvelist[7]}}</h4>
-              <h4>simivalue: {{similar[7]}}</h4>
+              <h4>曲线距离: {{similar[7]}}</h4>
               <h4>异常曲线start: {{ ablist_start }}</h4>
               <h4>异常曲线end: {{ ablist_end }}</h4>
               <h4>相似曲线start: {{ slist_start }}</h4>
@@ -310,7 +310,7 @@
             </div>
             <div style="text-align: left;">
               <h4>相似曲线名称: {{curvelist[8]}}</h4>
-              <h4>simivalue: {{similar[8]}}</h4>
+              <h4>曲线距离: {{similar[8]}}</h4>
               <h4>异常曲线start: {{ ablist_start }}</h4>
               <h4>异常曲线end: {{ ablist_end }}</h4>
               <h4>相似曲线start: {{ slist_start }}</h4>
@@ -331,7 +331,7 @@
             </div>
             <div style="text-align: left;">
               <h4>相似曲线名称: {{curvelist[9]}}</h4>
-              <h4>simivalue: {{similar[9]}}</h4>
+              <h4>曲线距离: {{similar[9]}}</h4>
               <h4>异常曲线start: {{ ablist_start }}</h4>
               <h4>异常曲线end: {{ ablist_end }}</h4>
               <h4>相似曲线start: {{ slist_start }}</h4>
@@ -513,7 +513,16 @@ export default {
                     //   text: 'Abnormal data'
                     // },
                     tooltip: {
-                      trigger: 'axis'
+                      trigger: 'axis',
+                      show: true,
+                      formatter: function (params) {
+                        let result = `${params[0].axisValueLabel}</br>`;
+                        params.forEach(function (item) {
+                          result += `<div style="text-align:left">${item.marker} ${item.seriesName}:<b style="float:right">${item.value}</b></div>`;
+                        });
+                        return result;
+                      },
+
                     },
                     grid: {
                       left: '3%',

@@ -105,7 +105,6 @@ export default {
               smooth: true,
               name: '',
               type: 'line',
-              stack: 'Total',
               data: []
             }
           };

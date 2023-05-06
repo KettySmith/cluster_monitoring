@@ -64,15 +64,10 @@ def process_similarity(rank: int, ab_node:str, start_time: str, end_time: str):
     simi_list = simi_list[:rank]
 
     # 0
-
     node_simi = dict()
     node_simi['node_name'] = "abnormal0"
-    node_simi['x_data_list'] = simi_list[0]['x_data_list']
-
-    y_data_list=[-1,-1]
-    y_data_list.extend(query['y_data_list'])
-    y_data_list.extend([-1,-1])
-    node_simi['y_data_list'] = y_data_list
+    node_simi['x_data_list'] = query['x_data_list']
+    node_simi['y_data_list'] = query['y_data_list']
     simi_list.append(node_simi)
     return simi_list
 

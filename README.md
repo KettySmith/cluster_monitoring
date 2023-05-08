@@ -13,9 +13,7 @@ Development of large data cluster monitoring system based on implementation of a
 **使用**
 
 1. 刷新功能
-
-1.png
-
+![](https://github.com/KettySmith/cluster_monitoring/raw/main/pic/1.png)
 点击刷新按钮，会将后端目录cluster_monitoring\soft_backend\2套集群数据的文件（注意文件格式与目录格式不可变更）上传至云数据库，由于已经上传过因此无需再上传。若点击刷新，由于数据量较大，上传时间在30s左右，在上传成功后会提示success。
 
 2. 在显示集群信息之前，需要先选择集群名称

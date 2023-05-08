@@ -1,1 +1,0 @@
-@search_blue.route("/similarity_search", methods=['POST'])

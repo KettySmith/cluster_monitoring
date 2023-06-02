@@ -11,7 +11,7 @@
     </div>
 
 
-
+<!-- 点击切换事件 -->
     <div style="width:100%;height:40px">
       <h2 style="float:left">Active Shards</h2>
     </div>

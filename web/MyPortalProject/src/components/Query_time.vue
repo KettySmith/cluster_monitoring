@@ -6,6 +6,8 @@
             <h1 style="color:#9d9d9d;">暂无数据</h1>
         </div>
     </div>
+
+    <!-- 选择框的实现 -->
     <div style="width:20%;text-align: center;">
       <el-select v-model="selectedArr" multiple collapse-tags filterable style="margin-top:50%;" placeholder="请选择"
         @change='changeSelect'>
@@ -36,6 +38,7 @@ export default {
     }
   },
   methods: {
+    // 全选函数
     selectAll() {
       this.selectedArr = []
       if (this.checked) {
@@ -46,6 +49,7 @@ export default {
         this.selectedArr = []
       }
     },
+    // 监听用户选择是否改变
     changeSelect(val) {
       if (val.length === this.options.length) {
         this.checked = true
@@ -53,6 +57,7 @@ export default {
         this.checked = false
       }
     },
+    //点击查询
     node_query() {
       if(this.selectedArr.length==0){
         this.$message({

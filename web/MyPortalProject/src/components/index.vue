@@ -125,6 +125,7 @@
     },
   
     methods: {
+      //刷新按钮函数
       refresh(){
         this.loadingbut=true
         this.loading_text='加载中...'
@@ -141,6 +142,7 @@
   
         })
       },
+      // 按钮点击事件
       cluster_query() {
         console.log(this.value);
         this.truth_value=this.value;

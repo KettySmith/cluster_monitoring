@@ -3,6 +3,7 @@
     <div style="margin-top: 80px;margin-bottom: 50px;">
       <h1>相似度对比分析</h1>
     </div>
+    <!-- 下拉框选择筛选范围 -->
     <div class="panelgroup" style="width:100%;height:200px;font-size:30px;margin-top: 30px;">
       筛选范围
       <el-select v-model="value" clearable placeholder="请选择" style="margin-left: 5%;">
@@ -16,7 +17,7 @@
     <div v-if="if_top5">
 
 
-      <!-- 循环元素 -->
+      <!-- 图表展示内容 -->
       <div class="chart" style="display: flex;">
         <div style="width:80%;">
           <div id="top5_1" style="width: 100%;height: 520px;margin-top: 50px;margin-bottom: 50px;"></div>

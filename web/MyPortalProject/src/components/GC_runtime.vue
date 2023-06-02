@@ -61,23 +61,29 @@ export default {
         });
       }
       else{
-        this.data_show=!this.data_show;
+      this.data_show=true;
       console.log(this.options)
       console.log("here:", this.selectedArr)
       const params = new URLSearchParams();
       for (var i = 0; i < this.selectedArr.length; i++) {
         params.append("nodes_name", this.selectedArr[i])
       }
-      axios.post('http://127.0.0.1:8090/show/get_node_multi_data/' + this.cluster_name + '/elasticsearch_jvm_gc_collection_seconds_sum',
-        params, {
+      axios.post('http://127.0.0.1:8090/show/get_node_multi_data/' + this.cluster_name + '/elasticsearch_jvm_gc_collection_seconds_sum',        params, {
         headers: { 'content-type': 'application/x-www-form-urlencoded' }
       })//单指标和多指标都哟headers
         .then((res) => {
           //获取到数据
-          this.GC_runtime = echarts.init(document.getElementById('GC_runtime'))
+          let myChart = echarts.getInstanceByDom(document.getElementById("GC_runtime"));
+          if(myChart==null){
+            this.GC_runtime = echarts.init(document.getElementById('GC_runtime'))
+          }
+          else{
+            this.GC_runtime.clear()
+            this.GC_runtime = echarts.init(document.getElementById('GC_runtime'))
+          }
           var option = {
             // title: {
-            //   text: 'GC Runtime'
+            //   text: 'Index Time'
             // },
             tooltip: {
               trigger: 'axis',
@@ -130,7 +136,7 @@ export default {
             it.data = res.data[key].y_data_list;
             Series.push(it);
 
-          }
+          } 
           option.xAxis.data = res.data[Object.keys(res.data)[0]].x_data_list;
           option.legend.data = legends;
           option.series = Series;
@@ -144,7 +150,9 @@ export default {
   },
   //调用
   mounted() {
-    
+    // this.$nextTick(function () {
+    //   this.drawLine('GC_runtime')
+    // })
   }
 
 }

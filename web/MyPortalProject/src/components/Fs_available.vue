@@ -61,23 +61,29 @@ export default {
         });
       }
       else{
-        this.data_show=!this.data_show;
+      this.data_show=true;
       console.log(this.options)
       console.log("here:", this.selectedArr)
       const params = new URLSearchParams();
       for (var i = 0; i < this.selectedArr.length; i++) {
         params.append("nodes_name", this.selectedArr[i])
       }
-      axios.post('http://127.0.0.1:8090/show/get_node_multi_data/' + this.cluster_name + '/elasticsearch_filesystem_data_available_bytes',
-        params, {
+      axios.post('http://127.0.0.1:8090/show/get_node_multi_data/' + this.cluster_name + '/elasticsearch_filesystem_data_available_bytes',        params, {
         headers: { 'content-type': 'application/x-www-form-urlencoded' }
       })//单指标和多指标都哟headers
         .then((res) => {
           //获取到数据
-          this.Fs_available = echarts.init(document.getElementById('Fs_available'))
+          let myChart = echarts.getInstanceByDom(document.getElementById("Fs_available"));
+          if(myChart==null){
+            this.Fs_available = echarts.init(document.getElementById('Fs_available'))
+          }
+          else{
+            this.Fs_available.clear()
+            this.Fs_available = echarts.init(document.getElementById('Fs_available'))
+          }
           var option = {
             // title: {
-            //   text: 'Fs Available'
+            //   text: 'Index Time'
             // },
             tooltip: {
               trigger: 'axis',
@@ -130,21 +136,23 @@ export default {
             it.data = res.data[key].y_data_list;
             Series.push(it);
 
-          }
+          } 
           option.xAxis.data = res.data[Object.keys(res.data)[0]].x_data_list;
           option.legend.data = legends;
           option.series = Series;
           this.Fs_available.setOption(option);
 
         })
-
       }
-     
+      
+
     }
   },
   //调用
   mounted() {
-    
+    // this.$nextTick(function () {
+    //   this.drawLine('Fs_available')
+    // })
   }
 
 }

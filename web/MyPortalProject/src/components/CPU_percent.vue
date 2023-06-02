@@ -61,7 +61,7 @@ export default {
         });
       }
       else{
-        this.data_show=!this.data_show;
+      this.data_show=true;
       console.log(this.options)
       console.log("here:", this.selectedArr)
       const params = new URLSearchParams();
@@ -74,21 +74,28 @@ export default {
       })//单指标和多指标都哟headers
         .then((res) => {
           //获取到数据
-          this.CPU_percent = echarts.init(document.getElementById('CPU_percent'))
+          let myChart = echarts.getInstanceByDom(document.getElementById("CPU_percent"));
+          if(myChart==null){
+            this.CPU_percent = echarts.init(document.getElementById('CPU_percent'))
+          }
+          else{
+            this.CPU_percent.clear()
+            this.CPU_percent = echarts.init(document.getElementById('CPU_percent'))
+          }
           var option = {
             // title: {
-            //   text: 'CPU Percent'
+            //   text: 'Index Time'
             // },
             tooltip: {
               trigger: 'axis',
-                      show: true,
-                      formatter: function (params) {
-                        let result = `${params[0].axisValueLabel}</br>`;
-                        params.forEach(function (item) {
-                          result += `<div style="text-align:left">${item.marker} ${item.seriesName}:<b style="float:right">${item.value}</b></div>`;
-                        });
-                        return result;
-                      },
+              show: true,
+              formatter: function (params) {
+                let result = `${params[0].axisValueLabel}</br>`;
+                params.forEach(function (item) {
+                  result += `<div style="text-align:left">${item.marker} ${item.seriesName}:<b style="float:right">${item.value}</b></div>`;
+                });
+                return result;
+              },
             },
             grid: {
               left: '3%',
@@ -130,21 +137,23 @@ export default {
             it.data = res.data[key].y_data_list;
             Series.push(it);
 
-          }
+          } 
           option.xAxis.data = res.data[Object.keys(res.data)[0]].x_data_list;
           option.legend.data = legends;
           option.series = Series;
           this.CPU_percent.setOption(option);
 
         })
-
       }
-     
+      
+
     }
   },
   //调用
   mounted() {
-    
+    // this.$nextTick(function () {
+    //   this.drawLine('CPU_percent')
+    // })
   }
 
 }

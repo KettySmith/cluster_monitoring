@@ -61,7 +61,7 @@ export default {
         });
       }
       else{
-        this.data_show=!this.data_show;
+      this.data_show=true;
       console.log(this.options)
       console.log("here:", this.selectedArr)
       const params = new URLSearchParams();
@@ -74,10 +74,17 @@ export default {
       })//单指标和多指标都哟headers
         .then((res) => {
           //获取到数据
-          this.Transport_rx = echarts.init(document.getElementById('Transport_rx'))
+          let myChart = echarts.getInstanceByDom(document.getElementById("Transport_rx"));
+          if(myChart==null){
+            this.Transport_rx = echarts.init(document.getElementById('Transport_rx'))
+          }
+          else{
+            this.Transport_rx.clear()
+            this.Transport_rx = echarts.init(document.getElementById('Transport_rx'))
+          }
           var option = {
             // title: {
-            //   text: 'Transport rx'
+            //   text: 'Index Time'
             // },
             tooltip: {
               trigger: 'axis',
@@ -130,21 +137,23 @@ export default {
             it.data = res.data[key].y_data_list;
             Series.push(it);
 
-          }
+          } 
           option.xAxis.data = res.data[Object.keys(res.data)[0]].x_data_list;
           option.legend.data = legends;
           option.series = Series;
           this.Transport_rx.setOption(option);
 
         })
-
       }
       
+
     }
   },
   //调用
   mounted() {
-    
+    // this.$nextTick(function () {
+    //   this.drawLine('Transport_rx')
+    // })
   }
 
 }

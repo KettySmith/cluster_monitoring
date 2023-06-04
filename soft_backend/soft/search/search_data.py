@@ -1,6 +1,5 @@
 from .init import search_blue
 from flask import request
-import pymysql
 from dtw import *
 
 from soft.sql.connect_pool import *
@@ -46,6 +45,7 @@ def process_similarity(rank: int, ab_node: str, start_time: str, end_time: str):
     while (len(refers)):
         curr_node = nodes_name.pop()
         refer = refers.pop(curr_node)
+        ret_refer_y_data_list = refer['y_data_list']
         # normalize
         refer['y_data_list'] = list(map(lambda y: (y-refer['y_min']) / (refer['y_max']-refer['y_min']), refer['y_data_list']))  
         # dtw算法对比两个序列的相似度
@@ -60,7 +60,7 @@ def process_similarity(rank: int, ab_node: str, start_time: str, end_time: str):
         node_simi['node_name'] = curr_node
         node_simi['simi_value'] = alignment.__getattribute__('distance')
         node_simi['x_data_list'] = refer['x_data_list']
-        node_simi['y_data_list'] = refer['y_data_list']
+        node_simi['y_data_list'] = ret_refer_y_data_list
         simi_list.append(node_simi)
     # 按相似度大小排序，只返回rank个最相似序列
     simi_list.sort(key=lambda e: e['simi_value'])

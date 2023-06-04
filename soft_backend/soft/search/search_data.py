@@ -7,7 +7,7 @@ from soft.sql.connect_pool import *
 
 
 # 相似度比对
-# @search_blue.route("/similarity_search", methods=['POST'])
+@search_blue.route("/similarity_search", methods=['POST'])
 def similarity_search():
     # input_json = request.form(force=True)
     # print(input_json)

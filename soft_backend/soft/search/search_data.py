@@ -37,6 +37,7 @@ def process_similarity(rank: int, ab_node: str, start_time: str, end_time: str):
     ret = get_similarity_data(nodes_name, ab_node, start_time, end_time, cursor)
     nodes_name.remove(ab_node)
     query = ret.pop(ab_node)
+    query_y_data_list = query['y_data_list']
     # normalize
     query['y_data_list'] = list(map(lambda y: (y-query['y_min']) / (query['y_max']-query['y_min']), query['y_data_list']))  
     refers = ret
@@ -73,7 +74,7 @@ def process_similarity(rank: int, ab_node: str, start_time: str, end_time: str):
     node_simi['x_data_list'] = simi_list[0]['x_data_list']
 
     y_data_list = [-1, -1]
-    y_data_list.extend(query['y_data_list'])
+    y_data_list.extend(query_y_data_list)
     y_data_list.extend([-1, -1])
     node_simi['y_data_list'] = y_data_list
     simi_list.append(node_simi)
